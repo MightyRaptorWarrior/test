@@ -1,0 +1,5 @@
+main
+ptr
+*.o
+*.obj
+*.exe
