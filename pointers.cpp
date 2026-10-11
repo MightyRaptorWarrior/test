@@ -1,56 +1,111 @@
 #include <iostream>
 using namespace std;
 
-void highestNumber(double numbers[]);
-void lowestNumber(double numbers[]);
-void updateMin(double *number, double curr);
-void updateMax(double *number, double curr);
-void getInput();
-const int LIMIT_INPUT = 5;
-double numbers[LIMIT_INPUT];
+class Node{
+    public:
+        Node(){
+         SetData(0);
+         SetNext(nullptr);
+        }
+        Node(int data, Node *next){
+            SetData(data);
+            SetNext(next);
+        }
+        int GetData(){ return m_data; }
+        Node* GetNext(){ return m_next; }
+        void SetData(int data){ m_data = data; }
+        void SetNext(Node *next){ m_next = next; }
 
+    
+    
+    private:
+        int m_data;
+        Node *m_next;
+};
+class LinkedList{
+    public:    
+        LinkedList(){m_head = nullptr;}
+        LinkedList(Node *head) { 
+            m_head = head;
+        }
+        ~LinkedList(){
+            
+            while(m_head != nullptr){
+                Node *curr = m_head;
+                m_head = m_head -> GetNext();
+                delete curr;
+            }
+        }
+        void addNode(int data){
+            if(m_head == nullptr){
+                m_head = new Node(data, nullptr);
+            }
+            else{
+                Node *curr = m_head;
+                while(curr -> GetNext() != nullptr){
+                    curr = curr -> GetNext();
+                }
+                Node *lastNode = new Node(data, nullptr);
+                curr -> SetNext(lastNode);
+                }
+            
+        }
+        Node* GetHead(Node *head){
+            return m_head;
+        }
+        void removeFront(){
+            Node *curr = m_head;
+            //remove from front.
+            if(m_head == nullptr) return;
+            else if(m_head != nullptr){
+                m_head = m_head -> GetNext();
+                delete curr;
+            }
+        }
+        void removBack(){
+            //remove from back.
+            Node *curr = m_head;
+            Node *temp = curr;
+            if(m_head == nullptr) return;
+            else if(m_head -> GetNext() == nullptr){ 
+                delete m_head;
+                m_head = nullptr;
+            }
+            else{
+                while(curr -> GetNext() != nullptr){
+                    temp = curr;
+                    curr = curr -> GetNext(); 
+                }
+                delete curr;
+                temp -> SetNext(nullptr);             
+            }
+            
+        }
+        void printList(){
+            Node *curr = m_head;
+            while(curr != nullptr){
+                cout << curr-> GetData() << " ";
+                curr = curr -> GetNext();
+            }
+            cout << endl;
+        }
+        private:
+            Node *m_head;
+  
+};
 
-
-int main(){
-
-    getInput();
-    highestNumber(numbers);
-    lowestNumber(numbers);
+int main() {
+   LinkedList linkedL;
+   linkedL.addNode(1);
+   linkedL.addNode(12); 
+   linkedL.addNode(3); 
+   linkedL.addNode(4);   
+   linkedL.printList();
+   linkedL.removeFront();
+   linkedL.printList();
+   linkedL.removBack();
+   linkedL.printList();
 
     return 0;
 }
-void getInput(){
-    double input =0;
-    for(int i=0; i < LIMIT_INPUT; i++){
-        cout << "Enter a number: ";
-        cin >> input;
-        cout << '\n';
-        numbers[i] = input;
-    }
-     
-}
 
-void highestNumber(double numbers[]){
-    double num = numbers[0];
-    for(int i=1; i<LIMIT_INPUT; i++){
-        updateMax(&num, numbers[i]);
-    }
-    cout << "the highest number is : " << num << endl;
-}
-void lowestNumber(double numbers[]){
-    double num = numbers[0];
-    for(int i=1; i<LIMIT_INPUT; i++){
-        updateMin(&num, numbers[i]);
-    }
-    cout << "the lowest number is : " << num << endl;
-}
-void updateMin(double *number, double curr){
-    if(curr < *number){
-        *number = curr;
-    }
-}
-void updateMax(double *number, double curr){
-    if(curr > *number){
-        *number = curr;
-    }
-}
