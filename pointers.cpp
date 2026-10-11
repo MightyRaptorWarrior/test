@@ -78,8 +78,41 @@ class LinkedList{
                 }
                 delete curr;
                 temp -> SetNext(nullptr);             
+            }  
+        }
+        void removeAt(int index){
+            Node *curr = m_head;
+            int counter = 0;
+            if(index < 0){
+                cout << "the index is out of bound or negative." << endl;
+                return;
             }
-            
+            else if(m_head == nullptr){
+                cout << "list is empty" << endl;
+                return;
+            }
+            else if(index == 0){
+                removeFront();
+                cout << "removed at index: " << index << endl;
+            }
+            else{
+                Node *temp = curr;
+                while(curr != nullptr){                   
+                    if(counter == index){
+                        temp -> SetNext(curr -> GetNext());
+                        int tempData = curr -> GetData();
+                        delete curr;
+                        curr = nullptr;
+                        cout << "node removed at index " << index << " that contains data " << tempData << "." << endl; 
+                        return;
+                    }
+                    temp = curr;
+                    curr = curr -> GetNext();
+                    counter++;
+                }
+                cout << "the index is out of bound or negative." << endl;
+            }
+
         }
         void printList(){
             Node *curr = m_head;
@@ -101,9 +134,7 @@ int main() {
    linkedL.addNode(3); 
    linkedL.addNode(4);   
    linkedL.printList();
-   linkedL.removeFront();
-   linkedL.printList();
-   linkedL.removBack();
+   linkedL.removeAt(5);
    linkedL.printList();
 
     return 0;
